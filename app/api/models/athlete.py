@@ -1,12 +1,18 @@
-from typing import Optional
-from sqlmodel import Field, SQLModel
+import sqlite3
 
+conn = sqlite3.connect("database.db")
 
-class Athlete(SQLModel, table=True):
+cursor = conn.cursor()
 
-    id : Optional[int] = Field(default=None, primary_key=True)
-    first_name : str = Field(max_length=255,unique=True)
-    last_name : str = Field(max_length=255,unique=True)
-    weight: int
-    age: int
-    height: int
+requete = """ CREATE TABLE Athlete (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name VARCHAR(255) UNIQUE NOT NULL,
+    last_name VARCHAR(255) UNIQUE NOT NULL,
+    weight INTEGER NOT NULL,
+    age INTEGER NOT NULL,
+    height INTEGER NOT NULL
+); """
+
+cursor.execute(requete)
+conn.commit()
+conn.close()

@@ -1,10 +1,16 @@
-from typing import Optional
-from sqlmodel import Field, SQLModel
+import sqlite3
 
+conn = sqlite3.connect("database.db")
 
-class User(SQLModel, table=True):
+cursor = conn.cursor()
 
-    id : Optional[int] = Field(default=None, primary_key=True)
-    username : str = Field(max_length=255,unique=True)
-    password: str = Field(max_length=255)
-    role: int
+requete = """ CREATE TABLE User (
+    id INTEGER PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) UNIQUE NOT NULL,
+    role INTEGER NOT NULL
+); """
+
+cursor.execute(requete)
+conn.commit()
+conn.close()
