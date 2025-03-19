@@ -1,9 +1,3 @@
-
-
-
-
-
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from fastapi.security import OAuth2PasswordBearer

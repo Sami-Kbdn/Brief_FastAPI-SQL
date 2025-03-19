@@ -6,8 +6,8 @@ cursor = conn.cursor()
 
 requete = """ CREATE TABLE Athlete (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name VARCHAR(255) UNIQUE NOT NULL,
-    last_name VARCHAR(255) UNIQUE NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     weight INTEGER NOT NULL,
     age INTEGER NOT NULL,
     height INTEGER NOT NULL
