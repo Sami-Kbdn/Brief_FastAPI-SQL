@@ -12,7 +12,7 @@ requete = """ CREATE TABLE Performances (
     vo2_max INTEGER NOT NULL,
     rf_max INTEGER NOT NULL,
     cadence_max INTEGER NOT NULL,
-    FOREIGN KEY (athlete_id) REFERENCES athlete(id)
+    FOREIGN KEY (athlete_id) REFERENCES athlete(id) 
 ); """
 
 cursor.execute(requete)
