@@ -4,7 +4,7 @@ conn = sqlite3.connect("database.db")
 
 cursor = conn.cursor()
 
-requete = """ CREATE TABLE Athlete (
+requete = """ CREATE TABLE IF NOT EXISTS Athlete (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,

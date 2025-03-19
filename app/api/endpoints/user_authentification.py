@@ -1,31 +1,22 @@
-#inscription
-
-#connexion
-    #génération token
-
-#ajout d'un athlète
-    #dans base user
-    #dans base athlete
-
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException
 from app.utils.jwt_handler import create_access_token
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
-from typing import Annotated
-from fastapi.security import OAuth2PasswordRequestForm
-from app.core.security import verify_password, pwd_context, get_password_hash
+from app.core.security import verify_password, get_password_hash
 import sqlite3
 
 router = APIRouter()
 
 @router.post("/login")
-async def login(data):
+async def login(data : dict):
     conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    requete = f"""SELECT username FROM users WHERE username = ?;"""
-    c.execute(requete, (data['username']))
+    requete = f"""SELECT * FROM User WHERE username = ?;"""
+    c.execute(requete, (data['username'],))
     result = c.fetchone()
-    if not result or verify_password(data['password'], result['password']):
+    result = dict(result)
+    if not result or not verify_password(data['password'], result['password']):
         raise HTTPException(status_code=401, detail='wrong login or password')
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
