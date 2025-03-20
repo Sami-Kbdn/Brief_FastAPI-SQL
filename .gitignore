@@ -1,5 +1,6 @@
 .venv
-.db
+*.db
 .sqlite
 .env
-.pyc
+*.pyc
+database.db
