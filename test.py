@@ -1,10 +1,19 @@
-import secrets
-import hashlib
+import random
+import sqlite3
 
-# Générer une clé aléatoire avec secrets
-secret_key = secrets.token_bytes(32)  # Génère une clé aléatoire de 32 octets
 
-# Appliquer le hash SHA256 sur la clé
-hashed_key = hashlib.sha256(secret_key).hexdigest()
+def populate_athlete_db(x):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    for i in range(x):
+        first_name = "Athlete"+str(i)
+        last_name = "Cycliste"
+        weight = random.randint(50,100)
+        age=random.randint(18,40)
+        height=random.randint(150,195)
+        c.execute(f"INSERT INTO Athlete ('first_name', 'last_name', 'weight', 'age', 'height' ) VALUES (?, ?, ?, ?, ?)", (first_name, last_name, weight, age, height))
+        conn.commit()
+    conn.close()
 
-print(f"Clé secrète SHA256 : {hashed_key}")
+if __name__=="__main__":
+    populate_athlete_db(10)

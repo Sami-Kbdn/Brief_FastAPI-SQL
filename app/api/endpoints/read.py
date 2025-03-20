@@ -19,26 +19,24 @@ async def all_athletes():
 
 
 @router.get('/max_power')
-async def all_athletes():
+async def max_power():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     try :
-        c.execute("SELECT MAX(power_max) FROM Performances;")
+        c.execute("SELECT MAX(power_max) FROM Performance;")
         max_power = c.fetchone()
         max_power = dict(max_power)
         print(max_power)
-        c.execute(f"""
-                            SELECT 
-                Athlete.first_name, 
-                Athlete.last_name
+        c.execute(f"""SELECT 
+                Athlete.first_name, Athlete.last_name
             FROM 
                 Athlete
             INNER JOIN 
-                Performances 
-                ON Athlete.id = Performances.athlete_id
+                Performance
+                ON Athlete.id = Performance.athlete_id
             WHERE 
-                Performances.power_max ={max_power['MAX(power_max)']};""")
+                Performance.power_max ={max_power['MAX(power_max)']};""")
         result = c.fetchone()
         print(result)
         return result

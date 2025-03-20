@@ -5,6 +5,7 @@ from datetime import timedelta
 from app.core.security import verify_password, get_password_hash
 import sqlite3
 
+
 router = APIRouter()
 
 @router.post("/login")
@@ -20,9 +21,11 @@ async def login(data : dict):
         raise HTTPException(status_code=401, detail='wrong login or password')
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": data['username'], 'role': result['role']}, expires_delta=access_token_expires
+        data={"sub": data["username"]}, expires_delta=access_token_expires
     )    
     return {"access_token": access_token, "token_type": "bearer"}
+
+# :data['username'], "id":result['id'], 'role': result['role']}
 
 @router.post("/register") 
 def register(data: dict):
