@@ -33,21 +33,21 @@ async def update_performance(data:dict):
     clefs = data.keys()
     c = conn.cursor()
     if 'athlete_id' in clefs:
-        c.execute("UPDATE Athlete SET athlete_id=? WHERE id=?", (data['athlete_id'],data["id"],))
+        c.execute("UPDATE Performance SET athlete_id=? WHERE id=?", (data['athlete_id'],data["id"],))
         conn.commit()
     if 'power_max' in clefs:
-        c.execute("UPDATE Athlete SET power_max=? WHERE id=?", (data['power_max'],data["id"],))
+        c.execute("UPDATE Performance SET power_max=? WHERE id=?", (data['power_max'],data["id"],))
         conn.commit()
     if 'hr_max' in clefs:
-        c.execute("UPDATE Athlete SET hr_max=? WHERE id=?", (data['hr_max'],data["id"],))
+        c.execute("UPDATE Performance SET hr_max=? WHERE id=?", (data['hr_max'],data["id"],))
         conn.commit()
     if 'vo2_max' in clefs:
-        c.execute("UPDATE Athlete SET vo2_max=? WHERE id=?", (data['vo2_max'],data["id"],))
+        c.execute("UPDATE Performance SET vo2_max=? WHERE id=?", (data['vo2_max'],data["id"],))
         conn.commit()
     if 'rf_max' in clefs:
-        c.execute("UPDATE Athlete SET rf_max=? WHERE id=?", (data['rf_max'],data["id"],))
+        c.execute("UPDATE Performance SET rf_max=? WHERE id=?", (data['rf_max'],data["id"],))
         conn.commit()
     if 'cadence_max' in clefs:
-        c.execute("UPDATE Athlete SET cadence_max=? WHERE id=?", (data['cadence_max'],data["id"],))
+        c.execute("UPDATE Performance SET cadence_max=? WHERE id=?", (data['cadence_max'],data["id"],))
         conn.commit()
     conn.close()
