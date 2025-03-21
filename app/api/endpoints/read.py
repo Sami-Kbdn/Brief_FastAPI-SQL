@@ -6,16 +6,19 @@ router = APIRouter()
 @router.get('/all_athletes')
 async def all_athletes():
     conn = sqlite3.connect('database.db')
-
     c = conn.cursor()
-    try :
+    try:
         c.execute("SELECT * FROM Athlete")
-        result = c.fetchall()
-        return result
+        columns = [desc[0] for desc in c.description]  # Récupère les noms des colonnes
+        rows = c.fetchall()
+        athletes = [dict(zip(columns, row)) for row in rows] 
+        return {"athletes": athletes}
     except sqlite3.Error as error:
-        return str(error)
+        return {"error": str(error)}
     finally:
         conn.close()
+
+
 
 
 @router.get('/max_vo')
