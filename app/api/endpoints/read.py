@@ -7,8 +7,41 @@ router = APIRouter()
 
 @router.get('/all_athletes')
 async def all_athletes(user: Annotated[str, Depends(get_user)]):
-    conn = sqlite3.connect('database.db')
+    """
+    Endpoint for retrieving all athlete records from the database.
 
+    This function fetches all the records from the 'Athlete' table and returns them as a list of tuples,
+    where each tuple represents an athlete's data.
+
+    Arguments:
+    - user (str): The username of the currently authenticated user (extracted from the JWT token). 
+      This is used to verify the user's identity and ensure that the request is authorized.
+
+    Returns:
+    - list: A list of tuples where each tuple represents an athlete's data.
+      Each tuple contains the following information:
+        - id: The unique identifier for the athlete.
+        - first_name: The first name of the athlete.
+        - last_name: The last name of the athlete.
+        - weight: The weight of the athlete.
+        - age: The age of the athlete.
+        - height: The height of the athlete.
+    - str: An error message in case of a database issue.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the retrieval process.
+
+    Example request:
+    GET /all_athletes
+
+    Example response:
+    [
+        (1, "Athlete1", "Cycliste", 70, 25, 180),
+        (2, "Athlete2", "Cycliste", 65, 28, 175)
+    ]
+    """
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
     try :
         c.execute("SELECT * FROM Athlete")
@@ -22,6 +55,31 @@ async def all_athletes(user: Annotated[str, Depends(get_user)]):
 
 @router.get('/max_vo')
 async def max_power(user: Annotated[str, Depends(get_user)]):
+    """
+    Endpoint for retrieving the athlete with the highest VO2 max value.
+
+    This function queries the database to find the athlete who has the highest VO2 max value,
+    by performing an inner join between the 'Athlete' and 'Performance' tables.
+    It then returns the first name of the athlete with the highest VO2 max value.
+
+    Arguments:
+    - user (str): The username of the currently authenticated user (extracted from the JWT token). 
+      This is used to verify the user's identity and ensure that the request is authorized.
+
+    Returns:
+    - dict: A dictionary containing the first name of the athlete with the highest VO2 max value. 
+      Example: {"first_name": "Athlete Name"}
+    - str: An error message in case of a database issue.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the query process.
+
+    Example request:
+    GET /max_vo
+
+    Example response:
+    {"first_name": "Athlete1"}
+    """
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -47,6 +105,32 @@ async def max_power(user: Annotated[str, Depends(get_user)]):
 
 @router.get('/max_power_weight_ratio')
 async def max_power():
+    """
+    Endpoint for retrieving the athlete with the highest power-to-weight ratio.
+
+    This function calculates the ratio of an athlete's weight to their maximum power output
+    (i.e., power_max) and retrieves the athlete with the highest ratio. The ratio is calculated
+    as the weight divided by the maximum power value. The result is ordered in descending order
+    and limited to the top athlete.
+
+    The function joins the 'Athlete' and 'Performance' tables based on athlete ID and performs
+    the necessary calculations to find the athlete with the highest power-to-weight ratio.
+
+    Returns:
+    - list: A list containing the first name, weight, and power_max of the athlete with the highest
+      power-to-weight ratio along with the calculated ratio. 
+      Example: [{"first_name": "Athlete Name", "weight": 70, "power_max": 400, "rapport poids/puissance": 0.175}]
+    - str: An error message if there is an issue with the database during the query process.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the query process.
+
+    Example request:
+    GET /max_power_weight_ratio
+
+    Example response:
+    [{"first_name": "Athlete1", "weight": 70, "power_max": 400, "rapport poids/puissance": 0.175}]
+    """
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -69,6 +153,31 @@ LIMIT 1;
     
 @router.get('/max_avg_power')
 async def max_power():
+    """
+    Endpoint for retrieving the athlete with the highest average maximum power.
+
+    This function calculates the average of an athlete's maximum power output (i.e., power_max) 
+    and retrieves the athlete with the highest average power. The result is ordered in descending 
+    order and limited to the top athlete.
+
+    The function joins the 'Athlete' and 'Performance' tables based on athlete ID, calculates 
+    the average of the 'power_max' for each athlete, and finds the athlete with the highest average.
+
+    Returns:
+    - list: A list containing the first name of the athlete and their calculated average maximum 
+      power (Puissance moyenne max).
+      Example: [{"first_name": "Athlete Name", "Puissance moyenne max": 350}]
+    - str: An error message if there is an issue with the database during the query process.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the query process.
+
+    Example request:
+    GET /max_avg_power
+
+    Example response:
+    [{"first_name": "Athlete1", "Puissance moyenne max": 350}]
+    """
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()

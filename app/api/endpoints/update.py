@@ -7,6 +7,44 @@ router = APIRouter()
 
 @router.put('/update_athlete')
 async def update_athlete(data:dict,user: Annotated[str, Depends(get_user)]):
+    """
+    Endpoint for updating the details of an athlete in the database.
+
+    This function allows updating various details of an athlete, such as:
+    - First name
+    - Maximum power (power_max)
+    - Age
+    - Height
+    - Weight
+
+    The function takes in a dictionary of data containing the athlete's ID and any attributes to be updated. 
+    It checks which fields are provided and performs an update accordingly. Only the fields provided in the 
+    request will be updated. After each update, the changes are committed to the database.
+
+    Parameters:
+    - data (dict): A dictionary containing the athlete's ID and the attributes to be updated.
+        Example: {"id": 1, "first_name": "NewName", "weight": 70}
+    - user (str): The authenticated username (provided by the `get_user` dependency).
+
+    Returns:
+    - str: A success message indicating the athlete's details have been updated.
+    - str: An error message if there is an issue with the database or the update process.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the update process.
+
+    Example request:
+    PUT /update_athlete
+    Request body:
+    {
+        "id": 1,
+        "first_name": "Updated Name",
+        "weight": 75
+    }
+
+    Example response:
+    "OK"
+    """
     conn = sqlite3.connect('database.db')
     clefs = data.keys()
     c = conn.cursor()
@@ -30,6 +68,45 @@ async def update_athlete(data:dict,user: Annotated[str, Depends(get_user)]):
 
 @router.put('/update_performance')
 async def update_performance(data:dict, user: Annotated[str, Depends(get_user)]):
+    """
+    Endpoint for updating the performance details of an athlete in the database.
+
+    This function allows updating various performance metrics of an athlete, such as:
+    - Athlete ID
+    - Maximum power (power_max)
+    - Maximum heart rate (hr_max)
+    - VO2 max
+    - Respiratory frequency (rf_max)
+    - Maximum cadence (cadence_max)
+
+    The function takes in a dictionary of data containing the performance record's ID and any attributes to be updated. 
+    It checks which fields are provided and performs an update accordingly. Only the fields provided in the 
+    request will be updated. After each update, the changes are committed to the database.
+
+    Parameters:
+    - data (dict): A dictionary containing the performance record's ID and the attributes to be updated.
+        Example: {"id": 1, "power_max": 350, "hr_max": 190}
+    - user (str): The authenticated username (provided by the `get_user` dependency).
+
+    Returns:
+    - str: A success message indicating the performance details have been updated.
+    - str: An error message if there is an issue with the database or the update process.
+
+    Raises:
+    - sqlite3.Error: If there is an issue with the database during the update process.
+
+    Example request:
+    PUT /update_performance
+    Request body:
+    {
+        "id": 1,
+        "power_max": 350,
+        "vo2_max": 55
+    }
+
+    Example response:
+    "OK"
+    """
     conn = sqlite3.connect('database.db')
     clefs = data.keys()
     c = conn.cursor()

@@ -10,6 +10,36 @@ router = APIRouter()
 
 @router.post("/login")
 async def login(data : dict):
+    """
+    Endpoint for user login. This function allows a user to authenticate by providing their username and password. 
+    If the provided credentials are correct, a JWT access token is generated and returned for further API access.
+
+    Arguments:
+    - data (dict): The request body should contain a dictionary with the following fields:
+        - "username" : The username of the user trying to log in.
+        - "password" : The password of the user.
+
+    Returns:
+    - dict: A dictionary containing the following fields:
+        - "access_token" : The JWT access token generated for the authenticated user.
+        - "token_type" : The type of token, which is always "bearer".
+
+    Raises:
+    - HTTPException: If the login is unsuccessful (wrong username or password), a 401 Unauthorized error is raised.
+
+    Example request:
+    POST /login
+    {
+        "username": "john_doe",
+        "password": "password123"
+    }
+
+    Example response:
+    {
+        "access_token": "<JWT_TOKEN>",
+        "token_type": "bearer"
+    }
+    """
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -28,7 +58,36 @@ async def login(data : dict):
 
 @router.post("/register") 
 def register(data: dict):
-    print(data)
+    """
+    Endpoint for user registration. This function allows a new user to be registered by providing a username, password, 
+    and role. The password is hashed before storing it in the database. If the username already exists, a 400 error is raised.
+
+    Arguments:
+    - data (dict): The request body should contain a dictionary with the following fields:
+        - "username" : The username of the user to be registered.
+        - "password" : The password of the user to be registered.
+        - "role" : The role of the user (integer value).
+
+    Returns:
+    - dict: A dictionary containing the following field:
+        - "message" : A success message indicating that the user has been created.
+
+    Raises:
+    - HTTPException: If the username already exists, a 400 Bad Request error is raised with the detail "User already exists".
+
+    Example request:
+    POST /register
+    {
+        "username": "john_doe",
+        "password": "password123",
+        "role": 1
+    }
+
+    Example response:
+    {
+        "message": "User created"
+    }
+    """
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
