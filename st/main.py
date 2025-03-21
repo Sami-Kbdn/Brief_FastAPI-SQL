@@ -14,14 +14,17 @@ def login():
             response = requests.post(API_URL, json={"username": username, "password": password})
             
             if response.status_code == 200:
-                data = response.json()  
+                data = response.json()
+                print(data)
                 st.success(f"Welcome {username} !")
-                st.session_state["token"] = data.get("token")
+                st.session_state["token"] = data.get("access_token")
+                print(st.session_state.token)
                 st.session_state["authenticated"] = True
 
     if "authenticated" in st.session_state and st.session_state["authenticated"]:
         if st.button("Click to access analytics"):
             st.session_state["page"] = "analytics"
+            st.rerun()
 
 if "page" in st.session_state and st.session_state["page"] == "analytics":
     import page2 

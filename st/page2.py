@@ -9,7 +9,7 @@ cursor = connection.cursor()
 def view_athletes():
     API_URL = "http://127.0.0.1:8000/all_athletes"
 
-    response = requests.get(API_URL)
+    response = requests.get(API_URL, headers={"Authorization":f"Bearer {st.session_state.token}"})
 
     if response.status_code == 200:
         data = response.json()
@@ -23,8 +23,7 @@ def view_athletes():
         df = pd.DataFrame(athletes)
 
         athlete_ids = df["id"].tolist()
-        selected_id = st.selectbox("Select an athlete by ID :", athlete_ids)
-
+        selected_id = st.selectbox("Select an athlete by ID :", athlete_ids, key='athlete_cyclist')
         selected_athlete = df[df["id"] == selected_id]
 
         st.write("Selected athlete information :")
@@ -32,5 +31,7 @@ def view_athletes():
 
     else:
         st.warning("No athletes found in the database")
+
+view_athletes()
 
 

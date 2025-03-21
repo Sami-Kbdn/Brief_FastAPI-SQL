@@ -1,11 +1,12 @@
 import jwt
 from app.core.config import SECRET_KEY, ALGORITHM
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import Security
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
 
-def get_user(token):
+def get_user(token: str = Security(oauth2_scheme)):
     """
     Retrieves the username (subject) from a JWT token.
 

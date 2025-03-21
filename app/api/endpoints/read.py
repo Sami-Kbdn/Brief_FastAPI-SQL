@@ -8,38 +8,26 @@ router = APIRouter()
 @router.get('/all_athletes')
 async def all_athletes(user: Annotated[str, Depends(get_user)]):
     """
-    Endpoint for retrieving all athlete records from the database.
+    Fetches all athletes from the database and returns them as a list of dictionaries.
 
-    This function fetches all the records from the 'Athlete' table and returns them as a list of tuples,
-    where each tuple represents an athlete's data.
+    This endpoint queries the 'Athlete' table in the SQLite database, retrieves all rows, and
+    formats the data into a list of dictionaries where each dictionary corresponds to an athlete
+    with column names as keys. The response will contain a list of all athletes or an error message
+    in case of a failure.
 
-    Arguments:
-    - user (str): The username of the currently authenticated user (extracted from the JWT token). 
-      This is used to verify the user's identity and ensure that the request is authorized.
+    Args:
+        user (str): The user making the request. The value is fetched via dependency injection 
+                    using the `get_user` function.
 
     Returns:
-    - list: A list of tuples where each tuple represents an athlete's data.
-      Each tuple contains the following information:
-        - id: The unique identifier for the athlete.
-        - first_name: The first name of the athlete.
-        - last_name: The last name of the athlete.
-        - weight: The weight of the athlete.
-        - age: The age of the athlete.
-        - height: The height of the athlete.
-    - str: An error message in case of a database issue.
-
+        dict: A JSON response containing either:
+            - A list of athletes in the form of dictionaries with column names as keys, or
+            - An error message in case of an exception during the database query.
+    
     Raises:
-    - sqlite3.Error: If there is an issue with the database during the retrieval process.
-
-    Example request:
-    GET /all_athletes
-
-    Example response:
-    [
-        (1, "Athlete1", "Cycliste", 70, 25, 180),
-        (2, "Athlete2", "Cycliste", 65, 28, 175)
-    ]
+        sqlite3.Error: If there is an error during the database query execution.
     """
+    print("#############################")
     conn = sqlite3.connect('database.db')
 
     c = conn.cursor()
