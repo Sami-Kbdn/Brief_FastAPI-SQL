@@ -1,5 +1,5 @@
 import sqlite3
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends
 from typing import Annotated
 from app.api.db.transaction import get_user
 
@@ -26,7 +26,7 @@ async def insert_athlete(data:dict, user: Annotated[str, Depends(get_user)]):
 
 
 @router.post('/insert_performance')
-async def insert_performance(data:dict):
+async def insert_performance(data:dict, user: Annotated[str, Depends(get_user)]):
     conn = sqlite3.connect('database.db')
 
     c = conn.cursor()

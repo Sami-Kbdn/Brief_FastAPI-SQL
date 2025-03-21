@@ -1,10 +1,12 @@
 import sqlite3
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from typing import Annotated
+from app.api.db.transaction import get_user
 
 router = APIRouter()
 
 @router.get('/all_athletes')
-async def all_athletes():
+async def all_athletes(user: Annotated[str, Depends(get_user)]):
     conn = sqlite3.connect('database.db')
 
     c = conn.cursor()
@@ -19,7 +21,7 @@ async def all_athletes():
 
 
 @router.get('/max_vo')
-async def max_power():
+async def max_power(user: Annotated[str, Depends(get_user)]):
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()

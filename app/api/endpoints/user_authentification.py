@@ -25,7 +25,6 @@ async def login(data : dict):
     )    
     return {"access_token": access_token, "token_type": "bearer"}
 
-# :data['username'], "id":result['id'], 'role': result['role']}
 
 @router.post("/register") 
 def register(data: dict):

@@ -1,11 +1,12 @@
 import sqlite3
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Depends
+from typing import Annotated
+from app.api.db.transaction import get_user
 
 router = APIRouter()
 
-@router.post('/update_athlete')
-async def update_athlete(data:dict):
+@router.put('/update_athlete')
+async def update_athlete(data:dict,user: Annotated[str, Depends(get_user)]):
     conn = sqlite3.connect('database.db')
     clefs = data.keys()
     c = conn.cursor()
@@ -27,8 +28,8 @@ async def update_athlete(data:dict):
     conn.close()
 
 
-@router.post('/update_performancee')
-async def update_performance(data:dict):
+@router.put('/update_performance')
+async def update_performance(data:dict, user: Annotated[str, Depends(get_user)]):
     conn = sqlite3.connect('database.db')
     clefs = data.keys()
     c = conn.cursor()
