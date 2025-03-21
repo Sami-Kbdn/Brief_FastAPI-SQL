@@ -27,7 +27,6 @@ async def all_athletes(user: Annotated[str, Depends(get_user)]):
     Raises:
         sqlite3.Error: If there is an error during the database query execution.
     """
-    print("#############################")
     conn = sqlite3.connect('database.db')
 
     c = conn.cursor()
